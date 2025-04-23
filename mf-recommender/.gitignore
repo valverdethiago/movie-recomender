@@ -1,0 +1,60 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Flask instance folder
+instance/
+
+# Flask environment variables
+.env
+*.env
+
+# Database files
+*.db
+*.sqlite
+*.wal
+
+# Virtual environment folders
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# IDE/Editor files
+.idea/
+.vscode/
+
+# MacOS system files
+.DS_Store
+
+# Logs
+*.log
+
+# Python virtual environment
+.env/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Flask migrations
+migrations/
+
+# SQLite database file
+watched.db
+movies.db
+
+# Other unwanted files
+*.swp
+*.swo
+
+# Dataset
+the-movies-dataset/
+runs/
+*.pkl
+*.duckdb
+*.db
+*.wal

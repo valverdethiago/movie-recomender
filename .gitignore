@@ -1,0 +1,7 @@
+**/node_modules/
+**/.idea/
+
+# Database 
+*.db
+*.wal
+*.duckdb

@@ -1,0 +1,166 @@
+openapi: 3.0.3
+info:
+  title: Movie Recommendation System
+  description: |-
+    This is the contract specification for a simple movie recommendation system.
+  version: 1.0.0
+servers:
+  - url: https://localhost:5000/api
+tags:
+  - name: users
+    description: Retrieval of information related to users.
+  - name: movies
+    description: Retrieval of information related to movies.
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: Get a page of users.
+      parameters:
+        - name: page
+          in: query
+          description: Page number. Should be greater than or equal to 1. Page size is 25 (unless there are fewer users left).
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+        '400':
+          description: Invalid page number (should be a positive integer).
+        '404':
+          description: Page doesn't exist (last page is lower than the provided one).
+  /users/{userId}/recommended-movies:
+    get:
+      tags:
+        - users
+      summary: Recommend movies to a user.
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user to whom movies will be recommended.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasicMovieInfo'
+        '400':
+          description: Invalid user ID (should be a positive integer).
+        '404':
+          description: User doesn't exist.
+  /movies:
+    get:
+      tags:
+        - movies
+      summary: Get a page of movies.
+      parameters:
+        - name: page
+          in: query
+          description: Page number. Should be greater than or equal to 1. Page size is 25 (unless there are fewer movies left).
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasicMovieInfo'
+        '400':
+          description: Invalid page number (should be a positive integer).
+        '404':
+          description: Page doesn't exist (last page is lower than the provided one).
+  /movies/{movieId}/info:
+    get:
+      tags:
+        - movies
+      summary: Get information from a movie.
+      parameters:
+        - name: movieId
+          in: path
+          description: ID of the movie whose information is being requested.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullMovieInfo'
+        '400':
+          description: Invalid movie ID (should be a positive integer).
+        '404':
+          description: Movie doesn't exist.
+  /movies/{movieId}/similar-movies:
+    get:
+      tags:
+        - movies
+      summary: List other movies similar to this one.
+      parameters:
+        - name: movieId
+          in: path
+          description: ID of the movie.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasicMovieInfo'
+        '400':
+          description: Invalid movie ID (should be a positive integer).
+        '404':
+          description: Movie doesn't exist.
+components:
+  schemas:
+    BasicMovieInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "The Lord of the Rings: The Fellowship of the Ring"
+        posterUrl:
+          type: string
+          example: "https://image.tmdb.org/t/p/w500/p4UokEk2XnjjRTdXGe6DLYXlbI1.jpg"
+    FullMovieInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "The Lord of the Rings: The Fellowship of the Ring"
+        posterUrl:
+          type: string
+          example: "https://image.tmdb.org/t/p/w500/p4UokEk2XnjjRTdXGe6DLYXlbI1.jpg"
+        overview:
+          type: string
+          example: "The Lord of the Rings: Young hobbit Frodo Baggins, after inheriting a mysterious ring from his uncle Bilbo, must leave his home in order to keep it from falling into the hands of its evil creator. Along the way, a fellowship is formed to protect the ringbearer and make sure that the ring arrives at its final destination: Mt. Doom, the only place where it can be destroyed."
